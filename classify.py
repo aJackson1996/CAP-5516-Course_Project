@@ -40,13 +40,13 @@ def train(model, data, labels, loss_func, optim, device, path):
         accuracies.append(accuracy)
         print(f"Epoch {epoch} done. Accuracy :{accuracy:.2f}%")
 
-    fig1 = plt.figure(1)
-    ax1 = fig1.add_subplot(111)
-    ax1.set_xlabel("Epoch")
-    ax1.set_ylabel("Accuracy")
-    ax1.plot(range(1, epoch + 1), accuracies, "b", label='Training curve')
-    ax1.legend(loc='lower left')
-    plt.show()
+    #fig1 = plt.figure(1)
+    #ax1 = fig1.add_subplot(111)
+    #ax1.set_xlabel("Epoch")
+    #ax1.set_ylabel("Accuracy")
+    #ax1.plot(range(1, epoch + 1), accuracies, "b", label='Training curve')
+    #ax1.legend(loc='lower left')
+    #plt.show()
 
     torch.save(
         model.state_dict(),
@@ -94,7 +94,7 @@ def eval(model, data, labels, device):
 
 parser = argparse.ArgumentParser('Classifier.')
 parser.add_argument('--Train_Classifiers',
-                    type=bool, default=False,
+                    type=bool, default=True,
                     help='Set to true to train 5 different classifiers using the base data set unioned with varying subsets of generated images.')
 parser.add_argument('--Evaluate_Classifiers',
                     type=bool, default=True,
@@ -106,9 +106,9 @@ FLAGS, unparsed = parser.parse_known_args()
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 loss_function = nn.CrossEntropyLoss()
 
-base_image_path = os.path.join(os.path.dirname(__file__), 'oasis-mri')
+base_image_path = os.path.join(os.path.dirname(__file__), 'train\\real')
 weights_path = os.path.join(os.path.dirname(__file__), 'classifier_weights')
-session_csv = pd.read_csv(os.path.join(base_image_path, 'oasis_cross-sectional.csv'))
+session_csv = pd.read_csv(os.path.join(os.path.dirname(__file__), 'oasis_cross-sectional.csv'))
 session_csv['ID'] = session_csv['ID'].str.split('_')
 session_csv['ID'] = session_csv['ID'].str[1]
 session_csv.set_index('ID', inplace=True)
@@ -117,8 +117,6 @@ session_csv['MRI_image'] = [[] for i in range(len(session_csv))]
 training_data = []
 labels = []
 
-
-base_image_path = os.path.join(os.path.dirname(__file__), 'oasis-mri')
 base_images = get_images_from_path(base_image_path)
 
 resize_transform = torchvision.transforms.Resize((224, 224))
@@ -174,7 +172,7 @@ if FLAGS.Train_Classifiers:
     model_healthy = model_healthy.to(device)
     optimizer_healthy = optim.SGD(model_healthy.parameters(), lr=0.001)
 
-    healthy_images = get_images_from_path(os.path.join(os.path.dirname(__file__), 'train\generated_healthy'), for_CGAN = False)
+    healthy_images = get_images_from_path(os.path.join(os.path.dirname(__file__), 'train\generated_healthy'))
     training_data_more_healthy = train_split_data
     labels_more_healthy = train_split_labels
     for image in healthy_images:
@@ -190,7 +188,7 @@ if FLAGS.Train_Classifiers:
     model_mci = model_mci.to(device)
     optimizer_mci = optim.SGD(model_mci.parameters(), lr=0.001)
 
-    mci_images = get_images_from_path(os.path.join(os.path.dirname(__file__), 'train\generated_mci'), for_CGAN = False)
+    mci_images = get_images_from_path(os.path.join(os.path.dirname(__file__), 'train\generated_mci'))
     training_data_more_mci = train_split_data
     labels_more_mci = train_split_labels
     for image in mci_images:
@@ -206,7 +204,7 @@ if FLAGS.Train_Classifiers:
     model_ad = model_ad.to(device)
     optimizer_ad = optim.SGD(model_ad.parameters(), lr=0.001)
 
-    ad_images = get_images_from_path(os.path.join(os.path.dirname(__file__), 'train\generated_ad'), for_CGAN = False)
+    ad_images = get_images_from_path(os.path.join(os.path.dirname(__file__), 'train\generated_ad'))
     training_data_more_ad = train_split_data
     labels_more_ad = train_split_labels
     for image in ad_images:
