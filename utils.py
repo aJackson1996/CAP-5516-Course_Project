@@ -44,23 +44,13 @@ def augment_image(x):
     x = flip_transform(x)
     return x
 
-def get_images_from_path(img_path, for_CGAN = True):
+def get_images_from_path(img_path):
     MRI_images = []
     for root, subdirs, files in os.walk(img_path):
         for file in files:
-            if(for_CGAN):
-                if ('PROCESSED' in root and 't88_masked_gfc_tra_90' in file):
-                    img_path = os.path.join(root, file)
-                    patient_ID = file.split('_')[1]
-                    img = Image.open(img_path)
-                    img_array = np.asarray(img)
-                    img_transform = transforms.ToTensor()
-                    img_tensor = img_transform(img)
-                    MRI_images.append(img_tensor)
-            else:
-                img_path = os.path.join(root, file)
-                img = Image.open(img_path)
-                img_transform = transforms.ToTensor()
-                img_tensor = img_transform(img)
-                MRI_images.append(img_tensor)
+            img_path = os.path.join(root, file)
+            img = Image.open(img_path)
+            img_transform = transforms.ToTensor()
+            img_tensor = img_transform(img)
+            MRI_images.append(img_tensor)
     return MRI_images

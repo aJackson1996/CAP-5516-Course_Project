@@ -248,12 +248,9 @@ if FLAGS.Train_Classifiers:
           device, "best_weights_added_all.pth")
 
 if FLAGS.Evaluate_Classifiers:
-    test_healthy_images = get_images_from_path(os.path.join(os.path.dirname(__file__), 'test\generated_healthy'),
-                                          for_CGAN=False)
-    test_mci_images = get_images_from_path(os.path.join(os.path.dirname(__file__), 'test\generated_mci'),
-                                          for_CGAN=False)
-    test_ad_images = get_images_from_path(os.path.join(os.path.dirname(__file__), 'test\generated_ad'),
-                                          for_CGAN=False)
+    test_healthy_images = get_images_from_path(os.path.join(os.path.dirname(__file__), 'test\generated_healthy'))
+    test_mci_images = get_images_from_path(os.path.join(os.path.dirname(__file__), 'test\generated_mci'))
+    test_ad_images = get_images_from_path(os.path.join(os.path.dirname(__file__), 'test\generated_ad'))
 
     for test_healthy_image in test_healthy_images:
         test_healthy_image = resize_transform(test_healthy_image)

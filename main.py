@@ -92,10 +92,9 @@ if __name__ == '__main__':
                         help='Set to true if you need to generate images using the model.')
     FLAGS = None
     FLAGS, unparsed = parser.parse_known_args()
-    absolute_path = os.path.join(os.path.dirname(__file__), 'oasis-mri')
+    real_images_path = os.path.join(os.path.dirname(__file__), 'train\\real')
     params_path = os.path.join(os.path.dirname(__file__), "trained_generator_params.pth")
-    absolute_path = '/'.join(absolute_path.split("\\"))
-    session_csv = pd.read_csv(os.path.join(absolute_path, 'oasis_cross-sectional.csv'))
+    session_csv = pd.read_csv(os.path.join(os.path.dirname(__file__), 'oasis_cross-sectional.csv'))
 
     session_csv['ID'] = session_csv['ID'].str.split('_')
     session_csv['ID'] = session_csv['ID'].str[1]
@@ -104,7 +103,7 @@ if __name__ == '__main__':
     session_csv['MRI_image'] = [[] for i in range(len(session_csv))]
     training_data = []
     labels = []
-    MRI_images = get_images_from_path(absolute_path)
+    MRI_images = get_images_from_path(real_images_path)
 
     stacked_images = torch.stack(MRI_images)
     def normalize(x : torch.Tensor):
