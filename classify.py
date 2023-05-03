@@ -40,13 +40,13 @@ def train(model, data, labels, loss_func, optim, device, path):
         accuracies.append(accuracy)
         print(f"Epoch {epoch} done. Accuracy :{accuracy:.2f}%")
 
-    #fig1 = plt.figure(1)
-    #ax1 = fig1.add_subplot(111)
-    #ax1.set_xlabel("Epoch")
-    #ax1.set_ylabel("Accuracy")
-    #ax1.plot(range(1, epoch + 1), accuracies, "b", label='Training curve')
-    #ax1.legend(loc='lower left')
-    #plt.show()
+    fig1 = plt.figure(1)
+    ax1 = fig1.add_subplot(111)
+    ax1.set_xlabel("Epoch")
+    ax1.set_ylabel("Accuracy")
+    ax1.plot(range(1, epoch + 1), accuracies, "b", label='Training curve')
+    ax1.legend(loc='lower left')
+    plt.show()
 
     torch.save(
         model.state_dict(),
