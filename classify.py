@@ -94,7 +94,7 @@ def eval(model, data, labels, device):
 
 parser = argparse.ArgumentParser('Classifier.')
 parser.add_argument('--Train_Classifiers',
-                    type=bool, default=True,
+                    type=bool, default=False,
                     help='Set to true to train 5 different classifiers using the base data set unioned with varying subsets of generated images.')
 parser.add_argument('--Evaluate_Classifiers',
                     type=bool, default=True,
